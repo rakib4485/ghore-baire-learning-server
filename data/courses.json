@@ -1,0 +1,132 @@
+[
+    {
+        "id": "01",
+        "course-name": "Big Data & Iot",
+        "course-code": "CSE 413",
+        "course-type": "theory",
+        "course-semester": "Fall-2024",
+        "course-rationale": "Digital Image Processing is a core subject of Computer Science and Engineering. It deals with various types of digital image processing techniques that are widely used in medical research and scientific analysis. The application area of image processing is huge which covers medical science, industry, military equipment, nuclear analysis, bioinformatics, traffic control and so on. With the advancement of various image processing techniques scientific community can analyze other planets in our galaxy..",
+        "teacher-profile": {
+            "name": "Sharmin Akter",
+            "email": "sharun.cse@diu.edu.bd",
+            "contact": "+880-1730599307",
+            "room": "317-08, AB4",
+            "designation": "Lecturer (Senior Scale)",
+            "image": "https://lh5.googleusercontent.com/wVI-Fbo6lnEahO2-jyD1u0rmbL9QfYtG6PyYBTeYaPBS6DXGPVMvhuZKykaLn7ay3PFTeKcFw479If4SQpVPEsnf8TmrC_lZ3BiB2WVcsNWgCsRTUKOI5_-QXUHjGT7996yTSs5o"
+        },
+        "weeks": [
+            {
+                "week": "Week - 1",
+                "title": "Introduction to Digital Image Processing",
+                "content-details": [
+                    "In this lesson we will discuss about basic concept of digital image, sampling and quantization, typical image processing sequence and the application of image processing."
+                ],
+                "content-links": [
+                    {
+                        "name": "Lecture Content",
+                        "link": "https://elearn.daffodilvarsity.edu.bd/pluginfile.php/2443962/mod_label/intro/1.%20Introduction%20%28Ch%201%29.ppt"
+                    }
+                ],
+                "video-link": "https://www.youtube.com/embed/hWSVHt4BJWE?si=LHZftDv2oeYl0LuF"
+            },
+            {
+                "week": "Week - 2",
+                "title": "Introduction to Digital Image Processing",
+                "content-details": [
+                    "In this lesson we will discuss about basic concept of digital image, sampling and quantization, typical image processing sequence and the application of image processing."
+                ],
+                "content-links": [
+                    {
+                        "name": "Lecture Content",
+                        "link": "https://elearn.daffodilvarsity.edu.bd/pluginfile.php/2443962/mod_label/intro/1.%20Introduction%20%28Ch%201%29.ppt"
+                    }
+                ],
+                "video-link": "https://www.youtube.com/embed/hWSVHt4BJWE?si=LHZftDv2oeYl0LuF"
+            },
+            {
+                "week": "Week - 3",
+                "title": "Introduction to Digital Image Processing",
+                "content-details": [
+                    "In this lesson we will discuss about basic concept of digital image, sampling and quantization, typical image processing sequence and the application of image processing."
+                ],
+                "content-links": [
+                    {
+                        "name": "Lecture Content",
+                        "link": "https://elearn.daffodilvarsity.edu.bd/pluginfile.php/2443962/mod_label/intro/1.%20Introduction%20%28Ch%201%29.ppt"
+                    }
+                ],
+                "video-link": "https://www.youtube.com/embed/hWSVHt4BJWE?si=LHZftDv2oeYl0LuF"
+            },
+            {
+                "week": "Week - 4",
+                "title": "Introduction to Digital Image Processing",
+                "content-details": [
+                    "In this lesson we will discuss about basic concept of digital image, sampling and quantization, typical image processing sequence and the application of image processing."
+                ],
+                "content-links": [
+                    {
+                        "name": "Lecture Content",
+                        "link": "https://elearn.daffodilvarsity.edu.bd/pluginfile.php/2443962/mod_label/intro/1.%20Introduction%20%28Ch%201%29.ppt"
+                    }
+                ],
+                "video-link": "https://www.youtube.com/embed/hWSVHt4BJWE?si=LHZftDv2oeYl0LuF"
+            },
+            {
+                "week": "Week - 5",
+                "title": "Introduction to Digital Image Processing",
+                "content-details": [
+                    "In this lesson we will discuss about basic concept of digital image, sampling and quantization, typical image processing sequence and the application of image processing."
+                ],
+                "content-links": [
+                    {
+                        "name": "Lecture Content",
+                        "link": "https://elearn.daffodilvarsity.edu.bd/pluginfile.php/2443962/mod_label/intro/1.%20Introduction%20%28Ch%201%29.ppt"
+                    }
+                ],
+                "video-link": "https://www.youtube.com/embed/hWSVHt4BJWE?si=LHZftDv2oeYl0LuF"
+            },
+            {
+                "week": "Week - 6",
+                "title": "Introduction to Digital Image Processing",
+                "content-details": [
+                    "In this lesson we will discuss about basic concept of digital image, sampling and quantization, typical image processing sequence and the application of image processing."
+                ],
+                "content-links": [
+                    {
+                        "name": "Lecture Content",
+                        "link": "https://elearn.daffodilvarsity.edu.bd/pluginfile.php/2443962/mod_label/intro/1.%20Introduction%20%28Ch%201%29.ppt"
+                    }
+                ],
+                "video-link": "https://www.youtube.com/embed/hWSVHt4BJWE?si=LHZftDv2oeYl0LuF"
+            },
+            {
+                "week": "Week - 7",
+                "title": "Introduction to Digital Image Processing",
+                "content-details": [
+                    "In this lesson we will discuss about basic concept of digital image, sampling and quantization, typical image processing sequence and the application of image processing."
+                ],
+                "content-links": [
+                    {
+                        "name": "Lecture Content",
+                        "link": "https://elearn.daffodilvarsity.edu.bd/pluginfile.php/2443962/mod_label/intro/1.%20Introduction%20%28Ch%201%29.ppt"
+                    }
+                ],
+                "video-link": "https://www.youtube.com/embed/hWSVHt4BJWE?si=LHZftDv2oeYl0LuF"
+            },
+            {
+                "week": "Week - 8",
+                "title": "Introduction to Digital Image Processing",
+                "content-details": [
+                    "In this lesson we will discuss about basic concept of digital image, sampling and quantization, typical image processing sequence and the application of image processing."
+                ],
+                "content-links": [
+                    {
+                        "name": "Lecture Content",
+                        "link": "https://elearn.daffodilvarsity.edu.bd/pluginfile.php/2443962/mod_label/intro/1.%20Introduction%20%28Ch%201%29.ppt"
+                    }
+                ],
+                "video-link": "https://www.youtube.com/embed/hWSVHt4BJWE?si=LHZftDv2oeYl0LuF"
+            }
+        ]
+    }
+]
