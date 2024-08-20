@@ -36,6 +36,7 @@ async function run() {
 
     const usersCollection = client.db('ghoreBahireLearning').collection('users');
 
+    //user related code
     app.get('/users', async (req, res) => {
       await client.connect()
       const query = {}
@@ -51,8 +52,17 @@ async function run() {
         return res.send({ acknowledged: false });
       }
       const result = await usersCollection.insertOne(user);
-      res.send(result);
+      res.send(result); 
     });
+
+    app.get("/users/teacher/:email", async (req, res) => {
+      await client.connect();
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      res.send({ isTeacher: user?.role === "teacher" });
+    });
+
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
