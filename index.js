@@ -35,6 +35,41 @@ async function run() {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
     const usersCollection = client.db('ghoreBahireLearning').collection('users');
+    const courseCollection = client.db('ghoreBahireLearning').collection('courses');
+
+    //course Related code
+    app.post('/courses', async(req, res) => {
+      await client.connect();
+      const course = req.body;
+      console.log(course);
+      const result = await courseCollection.insertOne(course);
+      res.send(result);
+    })
+
+    app.get('/courses', async(req, res) => {
+      await client.connect();
+      const query = {};
+      const result = await courseCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get('/my-courses', async(req, res) => {
+      await client.connect();
+      const email = req.query.email;
+      console.log(email)
+      const query = {};
+      const allCourse = await courseCollection.find(query).toArray();
+      let myCourses = [];
+      allCourse.forEach(course => {
+        console.log(course.teacherProfile.email);
+        console.log((JSON.stringify(course.teacherProfile.email) === (email)))
+        if (JSON.stringify(course.teacherProfile.email) === (email)) {
+          myCourses = [...myCourses, course]
+        }
+      })
+
+      res.send(myCourses)
+    })
 
     //user related code
     app.get('/users', async (req, res) => {
