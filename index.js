@@ -29,7 +29,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -97,6 +97,45 @@ async function run() {
       const user = await usersCollection.findOne(query);
       res.send({ isTeacher: user?.role === "teacher" });
     });
+
+    app.get('/login-user', async (req,res) => {
+      await client.connect();
+      const email = req.query.email;
+      const query = {email};
+      const result = await usersCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.put('/edit-profile', async(req, res) => {
+      await client.connect();
+      const email = req.query.email;
+      const userInfo = req.body;
+      const query = {email};
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          name: userInfo.name,
+          userInfo: userInfo
+        }
+      }
+      const result = await usersCollection.updateOne(query, updatedDoc, options);
+      res.send(result);
+    })
+
+    app.put('/edit-profile-picture', async(req, res) => {
+      await client.connect();
+      const email = req.query.email;
+      const userInfo = req.body;
+      const query = {email};
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          image: userInfo.photoURL,
+        }
+      }
+      const result = await usersCollection.updateOne(query, updatedDoc, options);
+      res.send(result);
+    })
 
   } finally {
     // Ensures that the client will close when you finish/error
