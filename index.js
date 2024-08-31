@@ -10,11 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 
+
 // 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.efsdsdy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -62,13 +62,22 @@ async function run() {
       let myCourses = [];
       allCourse.forEach(course => {
         console.log(course.teacherProfile.email);
-        console.log((JSON.stringify(course.teacherProfile.email) === (email)))
-        if (JSON.stringify(course.teacherProfile.email) === (email)) {
+        console.log((JSON.stringify(course.teacherProfile.email) === JSON.stringify(email)))
+        if (JSON.stringify(course.teacherProfile.email) === JSON.stringify(email)) {
           myCourses = [...myCourses, course]
         }
       })
+      console.log(myCourses)
 
       res.send(myCourses)
+    });
+
+    app.get('/course-edit/:id', async (req, res) => {
+      await client.connect();
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await courseCollection.findOne(query);
+      res.send(result);
     })
 
     //user related code
@@ -96,6 +105,14 @@ async function run() {
       const query = { email: email };
       const user = await usersCollection.findOne(query);
       res.send({ isTeacher: user?.role === "teacher" });
+    });
+
+    app.get("/users/admin/:email", async (req, res) => {
+      await client.connect();
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      res.send({ isAdmin: user?.role === "admin" });
     });
 
     app.get('/login-user', async (req,res) => {
@@ -135,7 +152,63 @@ async function run() {
       }
       const result = await usersCollection.updateOne(query, updatedDoc, options);
       res.send(result);
+    });
+
+    app.put("/users/update/:email", async(req, res) =>{
+      await client.connect();
+      const action = req.query.action;
+      console.log(action)
+      const email = req.params.email;
+      const filter = {email: email}
+      const user = await usersCollection.findOne(filter);
+      const option = { upsert: true };
+      let updatedDoc = {};
+      if(action === 'admin'){
+        const meet = req.body;
+        updatedDoc = {
+          $set: {
+            role: 'admin',
+          },
+        };
+      }
+      else if(action === 'teacher'){
+        updatedDoc = {
+          $set: {
+            role: 'teacher',
+          },
+        };
+      }
+      else if(action === 'delete'){
+        updatedDoc = {
+          $set: {
+            role: 'user',
+          },
+        };
+      }
+      else{
+        updatedDoc = {
+          $set: {
+            role: 'user',
+          },
+        };
+      }
+      const result = await usersCollection.updateOne(
+        filter,
+        updatedDoc,
+        option
+      );
+      res.send({acknowledged: true});
+    });
+
+    app.get('/single-user', async(req, res) => {
+      await client.connect();
+      const email = req.query.email;
+      const query = {email};
+      const result = await usersCollection.findOne(query);
+      res.send(result);
     })
+
+
 
   } finally {
     // Ensures that the client will close when you finish/error
