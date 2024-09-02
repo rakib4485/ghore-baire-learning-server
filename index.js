@@ -72,13 +72,223 @@ async function run() {
       res.send(myCourses)
     });
 
+    app.get('/course/:id', async (req, res) => {
+      await client.connect();
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await courseCollection.findOne(query)
+      res.send(result);
+    })
+
     app.get('/course-edit/:id', async (req, res) => {
       await client.connect();
       const id = req.params.id;
       const query = {_id: new ObjectId(id)};
       const result = await courseCollection.findOne(query);
       res.send(result);
-    })
+    });
+
+    app.put('/add-weeks/:id', async(req, res) => {
+      await client.connect();
+      const id = req.params.id;
+      const week = req.body;
+      const query = {_id: new ObjectId(id)};
+      const course = await courseCollection.findOne(query);
+      const weeks = course.weeks;
+      console.log(weeks)
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          weeks: [...weeks,week]
+        }
+      }
+      const result = await courseCollection.updateOne(query, updatedDoc, options);
+      res.send(result);
+    });
+
+    app.put('/add-member/:id', async(req, res) => {
+      await client.connect();
+      const id = req.params.id;
+      const courseStudent = req.body;
+      const query = {_id: new ObjectId(id)};
+      const course = await courseCollection.findOne(query);
+      const courseStudents = course.courseStudents;
+      console.log(courseStudents)
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          courseStudents: [...courseStudents,courseStudent]
+        }
+      }
+      const result = await courseCollection.updateOne(query, updatedDoc, options);
+      res.send(result);
+    });
+
+    app.put('/add-rationale/:id', async(req, res) => {
+      await client.connect();
+      const id = req.params.id;
+      const info = req.body;
+      const query = {_id: new ObjectId(id)};
+      const course = await courseCollection.findOne(query);
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          rationale: info.rationale
+        }
+      }
+      const result = await courseCollection.updateOne(query, updatedDoc, options);
+      res.send(result);
+    });
+
+    app.get('/my-added-course', async (req, res) => {
+      await client.connect();
+      console.log('called')
+      const email = req.query.email;
+      console.log(email)
+      const query = {}
+      const allCourse = await courseCollection.find(query).toArray();
+      let myCourses = [];
+      allCourse.forEach(course => {
+       course.courseStudents.map(student => {
+        console.log(JSON.stringify(student.email) === JSON.stringify(email))
+        if (JSON.stringify(student.email) === JSON.stringify(email)){
+          myCourses = [...myCourses, course];
+        }
+       })
+      })
+
+      res.send(myCourses) 
+    });
+
+    app.get('/user/isJoin/:id', async (req, res) => {
+      await client.connect();
+      console.log('clicked for is join');
+      
+      const id = req.params.id;
+      const email = req.query.email;
+      const query = { _id: new ObjectId(id) };
+      const course = await courseCollection.findOne(query);
+  
+      let isJoin = false;
+  
+      // Use a simple loop to allow for breaking out early
+      for (let student of course.courseStudents) {
+          if (JSON.stringify(student.email) === JSON.stringify(email)) {
+              isJoin = true;
+              break;
+          }
+      }
+  
+      // Send a single response based on the condition
+      res.send({ isJoin });
+  });
+
+  // app.put('/add-task/:id', async(req, res) => {
+  //   await client.connect()
+  //   const id = req.params.id;
+  //   const week = req.query.week;
+  //   console.log(week)
+  //   const task = req.body;
+  //   const query = {_id: new ObjectId(id)};
+  //   const course = await courseCollection.findOne(query);
+  //   const weeks = course.weeks;
+  //   weeks.map((wee, index) => {
+  //     console.log(index === parseInt(week))
+  //     if(index === parseInt(week)){
+  //       wee.tasks.push(task)
+  //       console.log(wee)
+  //       return res.send({acknowledged: true})
+  //     }
+  //   })
+  //   res.send({acknowledged: false})
+  // })
+
+  app.put('/add-task/:id', async (req, res) => {
+    await client.connect();
+    const id = req.params.id;
+    const weekIndex = parseInt(req.query.week); // Convert week query param to an integer
+    const task = req.body;
+
+    try {
+        const query = { _id: new ObjectId(id) };
+        const course = await courseCollection.findOne(query);
+
+        if (!course) {
+            return res.status(404).send({ acknowledged: false, message: 'Course not found' });
+        }
+
+        const weeks = course.weeks;
+
+        // Ensure the weekIndex is within bounds
+        if (weekIndex < 0 || weekIndex >= weeks.length) {
+            return res.status(400).send({ acknowledged: false, message: 'Invalid week index' });
+        }
+
+        const week = weeks[weekIndex];
+
+        // Initialize tasks if it doesn't exist
+        if (!week.tasks) {
+            week.tasks = [];
+        }
+
+        // Add the new task to the week's tasks
+        week.tasks.push(task);
+
+        // Update the course in the database
+        const result = await courseCollection.updateOne(
+            { _id: new ObjectId(id), "weeks.title": week.title },
+            { $set: { "weeks.$.tasks": week.tasks } }
+        );
+
+        if (result.modifiedCount > 0) {
+            return res.send({ acknowledged: true });
+        } else {
+            return res.status(500).send({ acknowledged: false, message: 'Failed to add task' });
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).send({ acknowledged: false, message: 'Server error' });
+    } finally {
+        
+    }
+});
+  app.get('/view-task/:id', async (req, res) => {
+    await client.connect();
+    const id = req.params.id;
+    const weekIndex = parseInt(req.query.week); // Convert week query param to an integer
+    const task = req.body;
+
+    try {
+        const query = { _id: new ObjectId(id) };
+        const course = await courseCollection.findOne(query);
+
+        if (!course) {
+            return res.status(404).send({ acknowledged: false, message: 'Course not found' });
+        }
+
+        const weeks = course.weeks;
+
+        // Ensure the weekIndex is within bounds
+        if (weekIndex < 0 || weekIndex >= weeks.length) {
+            return res.status(400).send({ acknowledged: false, message: 'Invalid week index' });
+        }
+
+        const week = weeks[weekIndex];
+
+        // Initialize tasks if it doesn't exist
+        if (!week.tasks) {
+            week.tasks = [];
+        }
+
+        // Add the new task to the week's tasks
+        res.send(week.tasks)
+    } catch (error) {
+        console.error(error)
+        res.status(500).send({ acknowledged: false, message: 'Server error' });
+    } finally {
+        
+    }
+});
 
     //user related code
     app.get('/users', async (req, res) => {
