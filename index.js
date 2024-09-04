@@ -51,7 +51,7 @@ async function run() {
       const query = {};
       const result = await courseCollection.find(query).toArray();
       res.send(result);
-    });
+    })
 
     app.get('/my-courses', async(req, res) => {
       await client.connect();
