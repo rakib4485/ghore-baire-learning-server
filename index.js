@@ -80,6 +80,14 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/course/:id/students', async (req, res) => {
+      await client.connect();
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await courseCollection.findOne(query)
+      res.send(result.courseStudents);
+    })
+
     app.get('/course-edit/:id', async (req, res) => {
       await client.connect();
       const id = req.params.id;
